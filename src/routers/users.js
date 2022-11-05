@@ -1,8 +1,9 @@
 const express = require("express");
 const User = require("../models/users");
 const router = new express.Router();
+const auth = require("../middleware/auth");
 
-router.post("/users", async (req, res) => {
+router.post("/users", auth, async (req, res) => {
   const user = new User(req.body);
   try {
     await user.save();

@@ -4,6 +4,7 @@ const bycrpt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Task = require("./tasks");
 
+// User model
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -63,6 +64,7 @@ userSchema.virtual("tasks", {
   foreignField: "owner",
 });
 
+// delete password and token in response
 userSchema.methods.toJSON = function () {
   const user = this;
   const userObject = user.toObject();
@@ -73,6 +75,7 @@ userSchema.methods.toJSON = function () {
   return userObject;
 };
 
+// Generate JWT
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(
@@ -99,6 +102,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
+// hash the password before save
 userSchema.pre("save", async function (next) {
   const user = this;
 

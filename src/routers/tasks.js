@@ -3,6 +3,8 @@ const Task = require("../models/tasks");
 const router = new express.Router();
 const auth = require("../middleware/auth");
 
+// @desc Create tasks
+// @access Private
 router.post("/tasks", auth, async (req, res) => {
   const task = new Task({
     ...req.body,

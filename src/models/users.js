@@ -58,6 +58,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+// virtual relation between tasks collection and user collection
 userSchema.virtual("tasks", {
   ref: "Task",
   localField: "_id",

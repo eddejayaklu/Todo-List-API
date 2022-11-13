@@ -48,8 +48,9 @@ const remainderEmail = (email, taskDescription, userName, taskDeadLine) => {
   const numberDate = stringDate.map(Number);
   const date = new Date(numberDate[2], numberDate[1] - 1, numberDate[0]);
   const dayOfWeek = date.getDay();
+  //first and second paramters are mins and hours respectively
   const scheduled = String(
-    `44 11 ${numberDate[0]} ${numberDate[1]} ${dayOfWeek}`
+    `00 00 ${numberDate[0]} ${numberDate[1]} ${dayOfWeek}`
   );
   cron.schedule(
     scheduled,

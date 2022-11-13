@@ -74,6 +74,33 @@ router.delete("/users/me", auth, async (req, res) => {
   }
 });
 
+// @desc logout from current device
+// @access Private
+router.post("/users/logout", auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token;
+    });
+
+    await req.user.save();
+    res.send("logout success");
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+// @desc logout from all devices
+// @access Private
+router.post("/users/logoutAll", auth, async (req, res) => {
+  try {
+    req.user.tokens = [];
+    await req.user.save();
+    res.send("logout out");
+  } catch (error) {
+    res.send(500).send();
+  }
+});
+
 // @desc multer instance
 const upload = multer({
   dest: "Profiles",

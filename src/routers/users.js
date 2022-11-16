@@ -147,4 +147,12 @@ router.post(
   }
 );
 
+// @desc delete profile Image
+// @access private
+router.delete("/users/me/profile", auth, async (req, res) => {
+  req.user.profile = undefined;
+  await req.user.save();
+  res.send();
+});
+
 module.exports = router;

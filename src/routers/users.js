@@ -155,4 +155,20 @@ router.delete("/users/me/profile", auth, async (req, res) => {
   res.send();
 });
 
+// @desc get profile Image
+// @access private
+router.get("/users/:id/avatar", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user || !user.avatar) {
+      throw new Error();
+    }
+    res.set("Content-Type", "image/jpg");
+    res.send(user.avatar);
+  } catch (error) {
+    res.status(400).send();
+  }
+});
+
 module.exports = router;

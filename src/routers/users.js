@@ -131,4 +131,20 @@ router.post(
   }
 );
 
+// @desc upload profile Image
+// @access private
+router.post(
+  "/users/me/profile",
+  auth,
+  upload.single("profile"),
+  async (req, res) => {
+    req.user.profile = req.file.buffer;
+    await req.user.save();
+    res.send();
+  },
+  (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
+  }
+);
+
 module.exports = router;

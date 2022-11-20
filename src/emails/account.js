@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendWelcomeEmail = (email, name) => {
+const sendEmail = (email, name) => {
   const mailOptions = {
     from: "Jayaedde@outlook.com",
     to: String(email),
@@ -77,7 +77,7 @@ const remainderEmail = (email, taskDescription, userName, taskDeadLine) => {
   );
 };
 module.exports = {
-  sendWelcomeEmail,
+  sendWelcomeEmail: sendEmail,
   sendCancelationEmail,
   remainderEmail,
 };

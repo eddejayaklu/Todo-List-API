@@ -15,7 +15,6 @@ exports.forgotPassword = async (req, res) => {
     )}/users/resetpassword/${resetToken}`;
     console.log(resetToken);
     forgotPasswordEmail(reseturl, user.email, user.name);
-    console.log("hello");
     res.status(200).send(user);
   } catch (error) {
     res.status(400).send();
@@ -36,13 +35,10 @@ exports.resetPassword = async (req, res) => {
       resetPasswordExpire: { $gt: Date.now() },
     });
     if (!user) throw new Error();
-    console.log(req.body.password);
     user.password = req.body.password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
-    console.log(user);
     await user.save();
-    console.log(user);
     const token = await user.generateAuthToken();
     res.status(200).send(user);
   } catch (error) {

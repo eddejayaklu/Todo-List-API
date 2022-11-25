@@ -27,7 +27,6 @@ exports.forgotPassword = async (req, res) => {
 // @access public
 exports.resetPassword = async (req, res) => {
   try {
-    console.log("hello");
     const resetPasswordToken = crypto
       .createHash("sha256")
       .update(req.params.resetToken)

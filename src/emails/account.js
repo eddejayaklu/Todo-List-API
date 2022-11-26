@@ -4,14 +4,14 @@ const cron = require("node-cron");
 const transporter = nodemailer.createTransport({
   service: "hotmail",
   auth: {
-    user: "Jayaedde@outlook.com",
-    pass: "Pwd123456",
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASSWORD,
   },
 });
 
 const sendWelcomeEmail = (email, name) => {
   const mailOptions = {
-    from: "Jayaedde@outlook.com",
+    from: process.env.EMAIL,
     to: String(email),
     subject: "Thanks for joining in!",
     text: `Hi ${name} if you do have any queries please do reach out to us!`,
@@ -26,9 +26,27 @@ const sendWelcomeEmail = (email, name) => {
   });
 };
 
+const forgotPasswordEmail = (resetUrl, email, name) => {
+  console.log(name, "hello");
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: String(email),
+    subject: "ResetPassword",
+    text: `Hi ${name}, You have recieved this mail because you have requsted to reset the password. \n\n Please click on the below link to rest the password.\n\n ${resetUrl}`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
 const sendCancelationEmail = (email, name) => {
   const mailOptions = {
-    from: "Jayaedde@outlook.com",
+    from: process.env.EMAIL,
     to: String(email),
     subject: "Sorry to see you go!",
     text: `Please mail us ${name} what let you go, so that we can improve`,
@@ -56,7 +74,7 @@ const remainderEmail = (email, taskDescription, userName, taskDeadLine) => {
     scheduled,
     () => {
       const mailOptions = {
-        from: "Jayaedde@outlook.com",
+        from: process.env.EMAIL,
         to: String(email),
         subject: `Reaminder for ${taskDescription}`,
         text: `Hi ${userName} This is a Reaminder for your ${taskDescription}`,
@@ -76,8 +94,10 @@ const remainderEmail = (email, taskDescription, userName, taskDeadLine) => {
     }
   );
 };
+
 module.exports = {
   sendWelcomeEmail,
   sendCancelationEmail,
   remainderEmail,
+  forgotPasswordEmail,
 };

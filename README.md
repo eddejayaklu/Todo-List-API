@@ -48,14 +48,6 @@ npm run dev
 - Implemented password reset feature
 - Each user can login on mutiple devices and at the same time if user wants to logout from all devices, the user will be able to do so just from one device.
 
-## Screenshots
-
-- addUser
-  ![addUser](https://user-images.githubusercontent.com/88376986/192283282-41e6f226-c0bb-45a7-976e-e2a0e1d18709.png)
-
-- getTasks_paginated
-  ![getTasks_paginated](https://user-images.githubusercontent.com/88376986/192283639-c97ffa88-74d3-406b-b65c-f6876b397666.png)
-
 ## Tech stacks
 
 - Node.js

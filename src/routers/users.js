@@ -4,6 +4,7 @@ const multer = require("multer");
 const router = new express.Router();
 const auth = require("../middleware/auth");
 const { sendWelcomeEmail, sendCancelationEmail } = require("../emails/account");
+const { forgotPassword, resetPassword } = require("./auth.js/forgotPassword");
 
 // @desc Create a new User(SignUp)
 // @access Public
@@ -21,7 +22,7 @@ router.post("/users", async (req, res) => {
 
 // @desc Login User
 // @access Public
-router.post("/users/login", auth, async (req, res) => {
+router.post("/users/login", async (req, res) => {
   try {
     const user = await User.findByCredentials(
       req.body.email,
@@ -103,10 +104,12 @@ router.post("/users/logoutAll", auth, async (req, res) => {
 
 // @desc multer instance
 const upload = multer({
-  dest: "Profiles",
+  //max 3MB file size
   limits: {
-    fileSize: 10000000,
+    fileSize: 30000000,
   },
+  // callback function with error will be called when extension does not match
+  // if everthing goes right callback with arg undefined will be called
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
       return cb(new Error("Please upload jpg or jpeg or png"));
@@ -131,7 +134,7 @@ router.post(
   }
 );
 
-// @desc upload profile Image
+// @desc update profile Image
 // @access private
 router.post(
   "/users/me/profile",
@@ -157,18 +160,25 @@ router.delete("/users/me/profile", auth, async (req, res) => {
 
 // @desc get profile Image
 // @access private
-router.get("/users/:id/avatar", async (req, res) => {
+router.get("/users/:id/profile", auth, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-
-    if (!user || !user.avatar) {
+    if (!user || !user.profile) {
       throw new Error();
     }
     res.set("Content-Type", "image/jpg");
-    res.send(user.avatar);
+    res.send(user.profile);
   } catch (error) {
     res.status(400).send();
   }
 });
+
+// @desc forgot password link will be sent to user email
+// @access public
+router.post("/users/forgotpassword", forgotPassword);
+
+// @desc update the new password with resetUrl
+// @access public
+router.post("/users/resetpassword/:resetToken", resetPassword);
 
 module.exports = router;

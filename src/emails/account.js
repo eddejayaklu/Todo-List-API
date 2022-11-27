@@ -62,14 +62,11 @@ const sendCancelationEmail = (email, name) => {
 };
 
 const remainderEmail = (email, taskDescription, userName, taskDeadLine) => {
-  const stringDate = taskDeadLine.split("-");
-  const numberDate = stringDate.map(Number);
-  const date = new Date(numberDate[2], numberDate[1] - 1, numberDate[0]);
-  const dayOfWeek = date.getDay();
+  const day = taskDeadLine.getDate();
+  const month = taskDeadLine.getMonth() + 1;
+  const dayOfWeek = taskDeadLine.getDay();
   //first and second paramters are mins and hours respectively
-  const scheduled = String(
-    `00 00 ${numberDate[0]} ${numberDate[1]} ${dayOfWeek}`
-  );
+  const scheduled = String(`00 00 ${day} ${month} ${dayOfWeek}`);
   cron.schedule(
     scheduled,
     () => {

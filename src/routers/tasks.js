@@ -13,51 +13,51 @@ router.post("/tasks", auth, async (req, res) => {
   });
   try {
     await task.save();
-    await task.populate("owner").execPopulate();
-    console.log(
-      task.owner.email,
-      task.description,
-      task.owner.name,
-      task.deadLineDate
-    );
-    remainderEmail(
-      task.owner.email,
-      task.description,
-      task.owner.name,
-      task.deadLineDate
-    );
-    //task = task.toObject()
     res.status(201).send(task);
   } catch (e) {
     res.status(400).send(e);
   }
+  await task.populate("owner").execPopulate();
+  remainderEmail(
+    task.owner.email,
+    task.description,
+    task.owner.name,
+    task.deadLineDate
+  );
 });
 
 //   /tasks?completed=true
 //   /tasks?limit=10&skip=20
-//   /tasks?sortBy=createdAt:desc
-
+//   /tasks?sortByCreation=createdAt:desc
+//   /tasks?sortByDate=deadLineDate:desc
 router.get("/tasks", auth, async (req, res) => {
   const match = {};
   const sort = {};
 
   if (req.query.completed) {
     match.completed = req.query.completed === "true";
+    console.log(match.completed);
   }
 
-  if (req.query.sortBy) {
-    const parts = req.query.sortBy.split(":");
+  if (req.query.sortByCreation) {
+    const parts = req.query.sortByCreation.split(":");
+    sort[parts[0]] = parts[1] === "desc" ? -1 : 1;
+  }
+
+  if (req.query.sortByDate) {
+    const parts = req.query.sortByDate.split(":");
     sort[parts[0]] = parts[1] === "desc" ? -1 : 1;
   }
   try {
     await req.user
       .populate({
         path: "tasks",
+        //only matched objects will be returned
         match,
         options: {
-          limit: parseInt(req.query.limit),
-          skip: parseInt(req.query.skip),
-          sort,
+          limit: parseInt(req.query.limit), //limit the number of objects in single page
+          skip: parseInt(req.query.skip), // skip the pages, skip will start from index 0
+          sort: sort,
         },
       })
       .execPopulate();
@@ -67,6 +67,8 @@ router.get("/tasks", auth, async (req, res) => {
   }
 });
 
+// @desc GET tasks by ID
+// @access Private
 router.get("/tasks/:id", auth, async (req, res) => {
   const _id = req.params.id;
   try {
@@ -80,10 +82,17 @@ router.get("/tasks/:id", auth, async (req, res) => {
   }
 });
 
+// @desc update tasks
+// @access Private
 router.patch("/tasks/:id", auth, async (req, res) => {
   const _id = req.params.id;
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["description", "completed"];
+  const allowedUpdates = [
+    "description",
+    "completed",
+    "deadLineDate",
+    "deadLineTime",
+  ];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
@@ -104,6 +113,8 @@ router.patch("/tasks/:id", auth, async (req, res) => {
   }
 });
 
+// @desc Delete tasks by ID
+// @access Private
 router.delete("/tasks/:id", auth, async (req, res) => {
   const _id = req.params.id;
   try {

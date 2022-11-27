@@ -12,7 +12,7 @@ const taskSchema = new mongoose.Schema(
       default: false,
     },
     deadLineDate: {
-      type: String, //dd/mm/yyyy
+      type: Date, //date should be in this format yyyy-mm-dd
       required: true,
     },
     deadLineTime: {
@@ -29,14 +29,6 @@ const taskSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
-// delete owner object
-taskSchema.methods.toJSON = function () {
-  const task = this;
-  const taskObject = task.toObject();
-  delete taskObject.owner;
-  return taskObject;
-};
 
 const Task = mongoose.model("Task", taskSchema);
 

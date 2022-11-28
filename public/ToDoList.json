@@ -1,0 +1,554 @@
+{
+	"info": {
+		"_postman_id": "bb20dbb6-ef1f-4b75-8571-88a81aba3f5a",
+		"name": "TaskManager-API Dev",
+		"description": "Backend API for the TaskManager application to manage tasks, users and authentication.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24521762"
+	},
+	"item": [
+		{
+			"name": "User Routes",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"jaya\",\r\n    \"email\":\"jayaedde@gmail.com\",\r\n    \"password\":\"phone1234\",\r\n    \"age\":21\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "- User registration\n    - Once registered, a token will be created.\n    - Passwords are hashed.\n    - Welcome mail will be sent to the registered gmail, if gmail exists."
+					},
+					"response": []
+				},
+				{
+					"name": "User Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"evamsi2004@gmail.com\",\r\n    \"password\":\"jaya1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						},
+						"description": "- User login\n    - User can login with email and password\n    - Plain text password will compare with stored hashed password\n    - Once logged in, a token will be created."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						},
+						"description": "- Get currently logged in user details.\n    - Must be authenticated."
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"sai Reddy\",\r\n    \"email\":\"evamsi2004@gmail.com\",\r\n    \"password\":\"phone1234\",\r\n    \"age\":21\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						},
+						"description": "- Update the user details.\n    - Only name, age, email and password can be updated in the database.\n    - Otherthan those fileds anything cannot be updated."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						},
+						"description": "- Delete the user.\n    - Once an user is deleted. All the tasks related to that user will be also erased in database automatically.\n    - Mail will be sent to the registered gmail. That the user no longer exists."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout from current device",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"logout"
+							]
+						},
+						"description": "- Logout from current device\n    - The JWT token will be removed from database.\n    - only the current device(one device) will be logged out."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout from All devices",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/logoutAll",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"logoutAll"
+							]
+						},
+						"description": "- Logout from all the devices where the user has logged in.\n    - All JWT tokens will be removed from database.\n    - Each and ever account will be logged out of the current user."
+					},
+					"response": []
+				}
+			],
+			"description": "- Users can create a profile, delete, modify and update their profiles."
+		},
+		{
+			"name": "Task Routes",
+			"item": [
+				{
+					"name": "Create Task",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\":\"complete refactoring of tasks routes\",\r\n    \"completed\":false,\r\n    \"deadLineDate\":\"2022-11-10\",\r\n    \"deadLineTime\":\"10:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/tasks",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tasks"
+							]
+						},
+						"description": "- Create Tasks for a user."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Task by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tasks/637b75383a625610c09cb330",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tasks",
+								"637b75383a625610c09cb330"
+							]
+						},
+						"description": "- Get the task by task ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Update the Task By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\"completed\": true,\r\n    \"description\": \"complete refactoring of tasks routes\",\r\n    \"deadLineDate\": \"2022-11-10T00:00:00.000Z\",\r\n    \"deadLineTime\": \"11:00\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/tasks/637b75383a625610c09cb330",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tasks",
+								"637b75383a625610c09cb330"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tasks/637b75383a625610c09cb330",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tasks",
+								"637b75383a625610c09cb330"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "- Tasks CRUD, pagination and sorting functionality."
+		},
+		{
+			"name": "Pagination and Sorting",
+			"item": [
+				{
+					"name": "Completed and uncompleted  tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tasks?completed=true",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "completed",
+									"value": "true"
+								}
+							]
+						},
+						"description": "- User can sort the tasks based on completed parameter.\n    - if completed=true, the user will get all completed tasks first then later uncompleted tasks.\n    - if completed=false, the user will get all uncompleted tasks first then later completed tasks."
+					},
+					"response": []
+				},
+				{
+					"name": "Paginate Tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tasks?limit=2&skip=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "skip",
+									"value": "1"
+								}
+							]
+						},
+						"description": "- User can paginate the tasks by using the parameters of limit and skip.\n    - Limit parameter tells, how many tasks should exist in one page at a time.\n    - Skip parameter tells, the page number.\n    - Skip parameter starts from 0.\n    - if limit=2 & skip=1, what it says is every page contains 2 tasks and user is on page 2(as skips starts from 0)."
+					},
+					"response": []
+				},
+				{
+					"name": "Sort by Creation Date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tasks?sortByCreation=createdAt:desc",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "sortByCreation",
+									"value": "createdAt:desc"
+								}
+							]
+						},
+						"description": "- Sorting by Creation date\n    - if creaatedAt:desc, the tasks will be sorted in descending order of creation date."
+					},
+					"response": []
+				},
+				{
+					"name": "Sort by DeadLine",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tasks?sortByDate=deadLineDate:desc",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "sortByDate",
+									"value": "deadLineDate:desc"
+								}
+							]
+						},
+						"description": "- Sort the tasks based on DeadLine\n    - if deadLineDate:desc, the tasks will be sorted in descending order of deadLineDate."
+					},
+					"response": []
+				}
+			],
+			"description": "- Sorting the tasks.\n    - Based on the deadLineDate of the tasks, that is you can prioritize your tasks.\n    - Based on tasks is completed or not\n- Pagination\n    - user can paginate the tasks as per user requirements."
+		},
+		{
+			"name": "Crud profile image",
+			"item": [
+				{
+					"name": "Create profile image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile",
+									"type": "file",
+									"src": "/C:/Users/VAMSI/OneDrive/Desktop/download.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/users/me/profile",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"me",
+								"profile"
+							]
+						},
+						"description": "- User can upload the profile Image\n    - max size of profile is 3 MB\n    - only JPG or JPEG or PNG files can be uploaded"
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/6380fcfdf9641d64d0a7736f/profile",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"6380fcfdf9641d64d0a7736f",
+								"profile"
+							]
+						},
+						"description": "- Get the user profile image.\n    - The image is in the binary format"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile image",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/me/profile",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"me",
+								"profile"
+							]
+						},
+						"description": "- Delete profile image of a user"
+					},
+					"response": []
+				}
+			],
+			"description": "- User can upload, get, delete the profile Image.\n    - only authenticated users can upload, delete and get the profile image"
+		},
+		{
+			"name": "Forgot Password(User)",
+			"item": [
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"evamsi2004@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/forgotpassword",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"forgotpassword"
+							]
+						},
+						"description": "- Password reset (lost password)\n    - User can request to reset password\n    - A hashed token will be emailed to the users registered email address\n    - A put request can be made to the generated url to reset password\n    - The token will expire after 20 minutes"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\":\"jaya1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/resetpassword/9ad52e6b49847832009b42e738fc8f564649ea95",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"resetpassword",
+								"9ad52e6b49847832009b42e738fc8f564649ea95"
+							]
+						},
+						"description": "- Update user info\n    - Authenticated user only\n    - Separate route to update password"
+					},
+					"response": []
+				}
+			],
+			"description": "- If a user lost his password, the user can reset the password with registered email."
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgwZmNmZGY5NjQxZDY0ZDBhNzczNmYiLCJpYXQiOjE2NjkzOTc3NTd9.69Y-UZUN1hoEruteQS4teWatSvI1zvEpeT_ZrbSqZmo",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

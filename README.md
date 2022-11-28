@@ -43,8 +43,8 @@ npm install
 npm run dev
 ```
 ## API Documentation
-To refer API Documentation please click below link
-[API Documentation][https://backendapi-taskmanager.herokuapp.com/]
+To refer API Documentation please click below link<br>
+[API Documentation](https://backendapi-taskmanager.herokuapp.com/)
 
 ## Features
 

@@ -14,6 +14,8 @@ Todo-List API using Node.js, to keep track of errands or tasks that need to be d
 Deployed in Heroku Platform
 [Deployment Link](https://backendapi-taskmanager.herokuapp.com/)
 
+As this is a backend API you have to use postman, to interact with the API.
+
 ## Installation
 
 1. Fork the Project
